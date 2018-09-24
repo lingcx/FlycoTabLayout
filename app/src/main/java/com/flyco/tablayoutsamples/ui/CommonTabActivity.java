@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -27,13 +28,13 @@ public class CommonTabActivity extends AppCompatActivity {
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<Fragment> mFragments2 = new ArrayList<>();
 
-    private String[] mTitles = {"首页", "消息", "联系人", "更多"};
+    private String[] mTitles = {"首页", "消息", "联系人", "更多","我的"};
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect, R.mipmap.tab_speech_unselect,
-            R.mipmap.tab_contact_unselect, R.mipmap.tab_more_unselect};
+            R.mipmap.ic_app_unselect, R.mipmap.tab_more_unselect,R.mipmap.tab_contact_unselect};
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_select, R.mipmap.tab_speech_select,
-            R.mipmap.tab_contact_select, R.mipmap.tab_more_select};
+            R.mipmap.ic_app_select, R.mipmap.tab_more_select,R.mipmap.tab_contact_select};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private View mDecorView;
     private ViewPager mViewPager;
@@ -45,6 +46,8 @@ public class CommonTabActivity extends AppCompatActivity {
     private CommonTabLayout mTabLayout_6;
     private CommonTabLayout mTabLayout_7;
     private CommonTabLayout mTabLayout_8;
+
+    private int mLastPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,11 +145,19 @@ public class CommonTabActivity extends AppCompatActivity {
     Random mRandom = new Random();
 
     private void tl_2() {
+        mTabLayout_2.openSpecialView(true);
+        mTabLayout_2.setSpecialViewPosition(2,getLayoutInflater().inflate(R.layout.layout_special_tab,null));
         mTabLayout_2.setTabData(mTabEntities);
         mTabLayout_2.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                mViewPager.setCurrentItem(position);
+                mTabLayout_2.setCurrentTab(mLastPosition);
+                if(position == 2){
+                    Toast.makeText(mContext, "特殊处理", Toast.LENGTH_SHORT).show();
+                }else {
+                    mLastPosition = position;
+                    mViewPager.setCurrentItem(position);
+                }
             }
 
             @Override
